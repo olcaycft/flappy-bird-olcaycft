@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     {
         InputChecker();
         RefreshPosition();
+        ChangeRotation();
     }
 
 
@@ -45,6 +46,18 @@ public class Player : MonoBehaviour
     {
         direction.y += gravity * strForDown * Time.deltaTime;
         transform.position += direction * Time.deltaTime;
+    }
+
+    private void ChangeRotation()
+    {
+        if (direction.y>0f)
+        {
+            transform.rotation=Quaternion.Lerp(transform.rotation,Quaternion.Euler(0f,0f,20f),0.5f); 
+        }
+        else if (direction.y < 0f)
+        {
+            transform.rotation=Quaternion.Lerp(transform.rotation,Quaternion.Euler(0f,0f,-35f),0.1f); 
+        }
     }
 
     private void BirdAnimation()
