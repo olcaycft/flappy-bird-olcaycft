@@ -14,11 +14,16 @@ public class Parallax : MonoBehaviour
 
     private void OffSetChanger()
     {
-        meshRenderer.material.mainTextureOffset += new Vector2(animationSpeed * Time.deltaTime, 0f);
+        var mat = meshRenderer.material;
+        var textureOffset = mat.mainTextureOffset;
+        textureOffset.x += animationSpeed * Time.deltaTime;
+        textureOffset.x = Mathf.Repeat(textureOffset.x, 1f);
         
-        if (meshRenderer.material.mainTextureOffset.x >= 100f) //if player do great job offset value will big. after 100 its will be turn 0
-        {
-            meshRenderer.material.mainTextureOffset = new Vector2(0f,0f);
-        }
+        //if (meshRenderer.material.mainTextureOffset.x >= 100f) //if player do great job offset value will big. after 100 its will be turn 0
+        //{
+        //    meshRenderer.material.mainTextureOffset = new Vector2(0f,0f);
+        //}
+
+        mat.mainTextureOffset = textureOffset;
     }
 }

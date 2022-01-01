@@ -5,11 +5,11 @@ public class Player : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
     private SpriteRenderer spriteRenderer => _spriteRenderer ?? (_spriteRenderer = GetComponent<SpriteRenderer>());
-    
+
     public Sprite[] sprites;
     private int spriteIndex;
     private float birdAnimationDuration = 0.12f;
-    
+
     private Vector3 direction;
     private Vector3 position;
     [SerializeField] private float gravity = -9.8f;
@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        InvokeRepeating(nameof(BirdAnimation),birdAnimationDuration,birdAnimationDuration);
+        InvokeRepeating(nameof(BirdAnimation), birdAnimationDuration, birdAnimationDuration);
     }
 
     private void Update()
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            direction=Vector3.up * strForUp;
+            direction = Vector3.up * strForUp;
         }
     }
 
@@ -50,13 +50,13 @@ public class Player : MonoBehaviour
 
     private void ChangeRotation()
     {
-        if (direction.y>0f)
+        if (direction.y > 0f)
         {
-            transform.rotation=Quaternion.Lerp(transform.rotation,Quaternion.Euler(0f,0f,20f),0.5f); 
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 20f), 0.5f);
         }
         else if (direction.y < 0f)
         {
-            transform.rotation=Quaternion.Lerp(transform.rotation,Quaternion.Euler(0f,0f,-35f),0.1f); 
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, -35f), 0.1f);
         }
     }
 
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
         position = transform.position;
         position.y = 0f;
         transform.position = position;
-        
-        direction=Vector3.zero;
+
+        direction = Vector3.zero;
     }
 }
