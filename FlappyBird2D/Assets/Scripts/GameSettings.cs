@@ -9,4 +9,5 @@ public class GameSettings : ScriptableObject
     public float gravity = -9.8f;
     public float strForUp = 5.5f;
     public float strForDown = 1.5f;
+    public float birdAnimationDuration = 0.12f;
 }

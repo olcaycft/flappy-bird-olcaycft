@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class Player : MonoBehaviour
 {
@@ -8,10 +9,14 @@ public class Player : MonoBehaviour
 
     public Sprite[] sprites;
     private int spriteIndex;
-    private float birdAnimationDuration = 0.12f;
+    [SerializeField] private float birdAnimationDuration => SettingsManager.GameSettings.birdAnimationDuration;
 
     private Vector3 direction;
     private Vector3 position;
+
+    private Quaternion rotation;
+    [SerializeField] private float fallAnimationCounter = 0.60f;
+
     [SerializeField] private float gravity => SettingsManager.GameSettings.gravity;
     [SerializeField] private float strForUp => SettingsManager.GameSettings.strForUp;
     [SerializeField] private float strForDown => SettingsManager.GameSettings.strForDown;
@@ -40,6 +45,11 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && GameManager.isBirdEnable)
         {
             direction = Vector3.up * strForUp;
+            fallAnimationCounter = 0.60f;
+        }
+        else
+        {
+            DecreaseFallAnimationCounter();
         }
     }
 
@@ -54,16 +64,18 @@ public class Player : MonoBehaviour
         if (direction.y > 0f)
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 20f), 0.5f);
-
         }
-        else if (direction.y < 0f)
+        else if (direction.y < 0f && fallAnimationCounter <= 0)
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, -95f), 0.09f);
+
+
         }
     }
 
     private void BirdFallAnimation()
     {
+        fallAnimationCounter = 0;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, -95f), 0.1f);
     }
     private void BirdAnimation()
@@ -111,6 +123,16 @@ public class Player : MonoBehaviour
         transform.position = position;
 
         direction = Vector3.zero;
+
+        transform.rotation = Quaternion.identity;
+    }
+
+    private void DecreaseFallAnimationCounter()
+    {
+        if (fallAnimationCounter >= 0)
+        {
+            fallAnimationCounter -= 1 * Time.deltaTime;
+        }
 
     }
 }
