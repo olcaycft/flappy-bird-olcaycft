@@ -12,9 +12,10 @@ public class Player : MonoBehaviour
 
     private Vector3 direction;
     private Vector3 position;
-    [SerializeField] private float gravity = -9.8f;
-    [SerializeField] private float strForUp = 5.5f;
-    [SerializeField] private float strForDown = 1.5f;
+    [SerializeField] private float gravity => SettingsManager.GameSettings.gravity;
+    [SerializeField] private float strForUp => SettingsManager.GameSettings.strForUp;
+    [SerializeField] private float strForDown => SettingsManager.GameSettings.strForDown;
+
 
     private void OnEnable()
     {
@@ -36,7 +37,7 @@ public class Player : MonoBehaviour
 
     private void InputChecker()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && GameManager.isBirdEnable)
         {
             direction = Vector3.up * strForUp;
         }
@@ -53,17 +54,22 @@ public class Player : MonoBehaviour
         if (direction.y > 0f)
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 20f), 0.5f);
+
         }
         else if (direction.y < 0f)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, -35f), 0.1f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, -95f), 0.09f);
         }
     }
 
+    private void BirdFallAnimation()
+    {
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, -95f), 0.1f);
+    }
     private void BirdAnimation()
     {
-        spriteIndex++;
         if (spriteIndex >= sprites.Length)
+            spriteIndex++;
         {
             spriteIndex = 0;
         }
@@ -71,13 +77,27 @@ public class Player : MonoBehaviour
         spriteRenderer.sprite = sprites[spriteIndex];
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerExit2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Objective"))
         {
             FindObjectOfType<GameManager>().IncreaseScore();
         }
-        else if (col.gameObject.CompareTag("Obstacle"))
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Obstacle"))
+        {
+            GameManager.isBirdEnable = false;
+            BirdFallAnimation();
+            if (other.gameObject.CompareTag("Ground"))
+            {
+                FindObjectOfType<GameManager>().GameOver();
+            }
+        }
+        else if (other.gameObject.CompareTag("Ground"))
         {
             FindObjectOfType<GameManager>().GameOver();
         }
@@ -87,8 +107,10 @@ public class Player : MonoBehaviour
     {
         position = transform.position;
         position.y = 0f;
+        position.z = 0f;
         transform.position = position;
 
         direction = Vector3.zero;
+
     }
 }

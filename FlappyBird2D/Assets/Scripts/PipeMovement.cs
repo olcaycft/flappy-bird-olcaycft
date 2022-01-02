@@ -14,7 +14,10 @@ public class PipeMovement : MonoBehaviour
 
     private void Update()
     {
-        MovePipe();
+        if (GameManager.isBirdEnable)
+        {
+            MovePipe();
+        }
         DestroyPipe();
     }
 
