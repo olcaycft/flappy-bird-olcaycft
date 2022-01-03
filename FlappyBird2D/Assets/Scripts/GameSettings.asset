@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f663a9ab3fffe4cb7dfd6d6d96a89d, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  pipeSpeed: 2.5
+  pipeSpeed: 4
+  gravity: -9.8
+  strForUp: 5.5
+  strForDown: 1.5
+  birdAnimationDuration: 0.12

@@ -80,8 +80,8 @@ public class Player : MonoBehaviour
     }
     private void BirdAnimation()
     {
+        spriteIndex++;
         if (spriteIndex >= sprites.Length)
-            spriteIndex++;
         {
             spriteIndex = 0;
         }
